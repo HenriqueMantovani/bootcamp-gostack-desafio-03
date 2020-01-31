@@ -20,11 +20,6 @@ module.exports = {
         type: Sequelize.STRING, // O _hash vai criptografar a senha do usuário
         allowNull: false,
       },
-      provider: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false, // False é cliente, padrão é cliente
-        allowNull: false,
-      },
       created_at: {
         type: Sequelize.DATE, // Armazena a data de criação
         allowNull: false,
