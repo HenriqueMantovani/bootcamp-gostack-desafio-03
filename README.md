@@ -1,2 +1,2 @@
 # FastFeet
-Desfaio Final relacionado ao Bootcamp da Rocketseat
+Desfaio 02 relacionado ao Bootcamp da Rocketseat
