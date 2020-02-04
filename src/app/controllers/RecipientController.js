@@ -38,6 +38,46 @@ class RecipientController {
 
     return res.json(recipient);
   }
+
+  // TODO: Fazer logica no name e newName e terminar o update
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      newName: Yup.string(),
+      street: Yup.string(),
+      number: Yup.string(),
+      complement: Yup.string(),
+      state: Yup.string(),
+      city: Yup.string(),
+      zip_code: Yup.string(),
+    });
+
+    // Ver se o req.body esta passando igual ao schema
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ Error: 'Validation Fails' });
+    }
+
+    const body = {
+      name: req.body.name,
+      street: req.body.street,
+      number: req.body.number,
+      complement: req.body.complement,
+      state: req.body.state,
+      city: req.body.city,
+      zip_code: req.body.zip_code,
+    };
+
+    // Procura um Destinatário pelo Nome e Rua
+    const recipient = await Recipient.findOne({
+      where: { name: req.body.name, street: req.body.street },
+    });
+
+    // req.body;
+
+    const recipientUpdated = await recipient.update(body);
+
+    return res.json(recipientUpdated);
+  }
 }
 
 export default new RecipientController();
