@@ -13,7 +13,11 @@ module.exports = {
       },
       avatar_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        // td avatar_id da tabela users vai ser tb id contido na tabela files
+        references: { model: 'files', key: 'id' },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+        allowNull: true,
       },
       email: {
         type: Sequelize.STRING,

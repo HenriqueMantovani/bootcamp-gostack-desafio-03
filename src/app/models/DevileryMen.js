@@ -10,7 +10,7 @@ class DevileryMen extends Model {
       },
       {
         sequelize,
-        tableName: 'devilery_men',
+        tableName: 'delivery_men',
       }
     );
     return this;
