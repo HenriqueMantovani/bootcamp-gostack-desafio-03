@@ -14,7 +14,6 @@ class RecipientController {
     });
 
     // Ver se o req.body esta passando igual ao schema
-
     if (req.body.name === '')
       return res.status(400).json({ Message: 'Type the name' });
     if (req.body.street === '')
@@ -34,9 +33,9 @@ class RecipientController {
       return res.status(400).json({ Error: 'Validation Fails' });
     }
 
-    const recipient = await Recipient.create(req.body);
+    const { name, street, city } = await Recipient.create(req.body);
 
-    return res.json(recipient);
+    return res.json({ name, street, city });
   }
 
   // TODO: Fazer logica no name e newName e terminar o update
@@ -58,7 +57,7 @@ class RecipientController {
     }
 
     const body = {
-      name: req.body.name,
+      name: req.body.newName ? req.body.newName : req.body.name,
       street: req.body.street,
       number: req.body.number,
       complement: req.body.complement,
@@ -72,7 +71,8 @@ class RecipientController {
       where: { name: req.body.name, street: req.body.street },
     });
 
-    // req.body;
+    if (!recipient)
+      return res.status(400).json({ error: 'Recipient not found' });
 
     const recipientUpdated = await recipient.update(body);
 
