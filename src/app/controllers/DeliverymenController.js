@@ -75,6 +75,9 @@ class RecipientController {
 
     const deliveryman = await DeliveryMen.findByPk(req.params.id);
 
+    if (!deliveryman)
+      return res.status(400).json({ error: 'Delivery Man does not exist' });
+
     const { email } = req.body;
 
     // Verifica se o email que ele passou ja não existe no BD
@@ -94,6 +97,19 @@ class RecipientController {
       id,
       name,
       email,
+    });
+  }
+
+  async delete(req, res) {
+    const deliveryman = await DeliveryMen.findByPk(req.params.id);
+
+    if (!deliveryman)
+      return res.status(400).json({ error: 'Delivery Man does not exist' });
+
+    await deliveryman.destroy();
+
+    return res.status(200).json({
+      message: 'Delivery Man removed',
     });
   }
 }
