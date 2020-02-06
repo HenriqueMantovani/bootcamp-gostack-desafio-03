@@ -14,7 +14,7 @@ class Recipient extends Model {
       },
       {
         sequelize,
-        tableName: 'recipient',
+        tableName: 'recipients',
       }
     );
     return this;
