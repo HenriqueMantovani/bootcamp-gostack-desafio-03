@@ -15,6 +15,12 @@ class DevileryMen extends Model {
     );
     return this;
   }
+
+  // Associa um avatar_id dentro da tabela de users
+  static associate(models) {
+    // o "as" serve para mostrar o nome do campo que aparecerá na resposta de req
+    this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
+  }
 }
 
 export default DevileryMen;

@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
+
+// Models
 import DeliveryMen from '../models/DevileryMen';
+import File from '../models/File';
 
 // Regex para validação de email
 function validateEmail(email) {
@@ -35,7 +38,7 @@ class RecipientController {
     });
 
     if (deliveryExists) {
-      return res.status(400).json({ Error: 'User alredy exists.' });
+      return res.status(400).json({ Error: 'Delivery Man alredy exists.' });
     }
 
     const delivery = await DeliveryMen.create(req.body);
@@ -43,45 +46,56 @@ class RecipientController {
     return res.json(delivery);
   }
 
-  // TODO: Fazer logica no name e newName e terminar o update
-  /* async update(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      newName: Yup.string(),
-      street: Yup.string(),
-      number: Yup.string(),
-      complement: Yup.string(),
-      state: Yup.string(),
-      city: Yup.string(),
-      zip_code: Yup.string(),
+  async index(req, res) {
+    const deliveryMen = await DeliveryMen.findAll({
+      attributes: ['id', 'name', 'email', 'avatar_id'],
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['name', 'path', 'url'],
+        },
+      ],
     });
 
-    // Ver se o req.body esta passando igual ao schema
+    return res.json(deliveryMen);
+  }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string()
+        .email()
+        .required(),
+    });
+
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ Error: 'Validation Fails' });
     }
 
-    const body = {
-      name: req.body.name,
-      street: req.body.street,
-      number: req.body.number,
-      complement: req.body.complement,
-      state: req.body.state,
-      city: req.body.city,
-      zip_code: req.body.zip_code,
-    };
+    const deliveryman = await DeliveryMen.findByPk(req.params.id);
 
-    // Procura um Destinatário pelo Nome e Rua
-    const recipient = await Recipient.findOne({
-      where: { name: req.body.name, street: req.body.street },
+    const { email } = req.body;
+
+    // Verifica se o email que ele passou ja não existe no BD
+    if (email !== deliveryman.email) {
+      const deliveryManExists = await DeliveryMen.findOne({
+        where: { email },
+      });
+
+      if (deliveryManExists) {
+        return res.status(400).json({ error: 'Delivery Man alredy exists.' });
+      }
+    }
+
+    const { id, name } = await deliveryman.update(req.body);
+
+    return res.json({
+      id,
+      name,
+      email,
     });
-
-    // req.body;
-
-    const recipientUpdated = await recipient.update(body);
-
-    return res.json(recipientUpdated);
-  } */
+  }
 }
 
 export default new RecipientController();

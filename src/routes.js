@@ -19,6 +19,9 @@ routes.put('/recipients', authMiddleware, RecipientController.update);
 
 // Entregadores
 routes.post('/deliverymen', authMiddleware, DeliveryController.store);
+routes.get('/deliverymen', authMiddleware, DeliveryController.index);
+routes.put('/deliverymen/:id', authMiddleware, DeliveryController.update);
+// routes.delete('/deliverymen', authMiddleware, DeliveryController.delete); */
 
 routes.post('/sessions', SessionController.store);
 
