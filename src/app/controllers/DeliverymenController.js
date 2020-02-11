@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
 // Models
-import DeliveryMen from '../models/DevileryMen';
+import DeliveryMen from '../models/DeliveryMen';
 import File from '../models/File';
 
 // Regex para validação de email
@@ -20,13 +20,12 @@ class RecipientController {
     });
 
     // Ver se o req.body esta passando igual ao schema
-
     if (req.body.name === '')
       return res.status(400).json({ Error: 'Type the name' });
     if (req.body.email === '')
       return res.status(400).json({ Error: 'Type the email' });
     if (req.body.email && !validateEmail(req.body.email))
-      return res.status(400).json({ Error: 'Email inserido Incorretamente' });
+      return res.status(400).json({ Error: 'Wrong email syntax' });
 
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ Error: 'Validation Fails' });

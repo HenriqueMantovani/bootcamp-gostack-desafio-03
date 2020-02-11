@@ -6,7 +6,8 @@ import authMiddleware from './app/middlewares/auth';
 
 // Controllers
 import RecipientController from './app/controllers/RecipientController';
-import DeliveryController from './app/controllers/DeliverymenController';
+import Delivery from './app/controllers/DeliveryController';
+import DeliveryMenController from './app/controllers/DeliveryMenController';
 import FileController from './app/controllers/FileController';
 import SessionController from './app/controllers/SessionController';
 
@@ -21,13 +22,13 @@ routes.post('/recipients', authMiddleware, RecipientController.store);
 routes.put('/recipients', authMiddleware, RecipientController.update);
 
 // Entregadores
-routes.post('/deliverymen', authMiddleware, DeliveryController.store);
-routes.get('/deliverymen', authMiddleware, DeliveryController.index);
-routes.put('/deliverymen/:id', authMiddleware, DeliveryController.update);
-routes.delete('/deliverymen/:id', authMiddleware, DeliveryController.delete);
+routes.post('/deliverymen', authMiddleware, DeliveryMenController.store);
+routes.get('/deliverymen', authMiddleware, DeliveryMenController.index);
+routes.put('/deliverymen/:id', authMiddleware, DeliveryMenController.update);
+routes.delete('/deliverymen/:id', authMiddleware, DeliveryMenController.delete);
 
 // Pedidos
-// routes.post('/deliverymen', authMiddleware, DeliveryController.store);
+routes.post('/deliveries', authMiddleware, Delivery.store);
 // routes.get('/deliverymen', authMiddleware, DeliveryController.index);
 // routes.put('/deliverymen/:id', authMiddleware, DeliveryController.update);
 // routes.delete('/deliverymen/:id', authMiddleware, DeliveryController.delete);
