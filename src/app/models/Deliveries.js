@@ -1,5 +1,7 @@
 import Sequelize, { Model } from 'sequelize';
 
+// Teste
+
 class Delivery extends Model {
   static init(sequelize) {
     super.init(
