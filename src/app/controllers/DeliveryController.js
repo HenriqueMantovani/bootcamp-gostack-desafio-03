@@ -1,4 +1,3 @@
-// TODO: Implementar Controller de Order
 import * as Yup from 'yup';
 
 // Models
