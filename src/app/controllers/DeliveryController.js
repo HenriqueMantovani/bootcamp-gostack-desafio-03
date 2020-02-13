@@ -1,7 +1,8 @@
 import * as Yup from 'yup';
-
+import Mail from '../../lib/Mail';
 // Models
 import Delivery from '../models/Deliveries';
+import DeliveryMen from '../models/DeliveryMen';
 
 class RecipientController {
   async store(req, res) {
@@ -25,6 +26,16 @@ class RecipientController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ Error: 'Validation Fails' });
     }
+
+    const deliveryMan = await DeliveryMen.findByPk(req.body.deliveryman_id, {
+      attributes: ['name', 'email'],
+    });
+
+    await Mail.sendMail({
+      to: `${deliveryMan.name} <${deliveryMan.email}>`,
+      subject: 'Nova encomenda',
+      text: 'Você tem uma nova encomenda',
+    });
 
     const delivery = await Delivery.create(req.body);
 
