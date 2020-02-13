@@ -3,6 +3,7 @@ import Mail from '../../lib/Mail';
 // Models
 import Delivery from '../models/Deliveries';
 import DeliveryMen from '../models/DeliveryMen';
+import Recipient from '../models/Recipient';
 
 class RecipientController {
   async store(req, res) {
@@ -31,13 +32,29 @@ class RecipientController {
       attributes: ['name', 'email'],
     });
 
+    if (!deliveryMan) {
+      return res.status(400).json({ error: 'Delivery Man not found' });
+    }
+
+    const recipient = await Recipient.findByPk(req.body.recipient_id);
+
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient not found' });
+    }
+
+    const delivery = await Delivery.create(req.body);
+
+    // TODO: Melhorar corpo do email
     await Mail.sendMail({
       to: `${deliveryMan.name} <${deliveryMan.email}>`,
       subject: 'Nova encomenda',
-      text: 'Você tem uma nova encomenda',
+      template: 'deliverydetails',
+      context: {
+        deliveryMan: deliveryMan.name,
+        recipientName: recipient.name,
+        adress: recipient.street + recipient.number,
+      },
     });
-
-    const delivery = await Delivery.create(req.body);
 
     return res.status(200).json(delivery);
   }
